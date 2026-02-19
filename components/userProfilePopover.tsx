@@ -9,6 +9,7 @@ import Link from "next/link";
 import Stack from "@/assets/coin-stack.svg";
 
 import UserProfile from "./userProfileInfo";
+import { useState } from "react";
 
 interface UserProfilePopoverPropes {
   name?: string;
@@ -29,9 +30,10 @@ export function UserProfilePopover({
   avatarUrl,
   pro = true,
 }: UserProfilePopoverPropes) {
+  const [isOpen, setIsOpen] = useState(false);
   const usagePercent = Math.round((spent / limit) * 100);
   return (
-    <Popover modal>
+    <Popover modal open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
         <button className="relative h-[50px] w-[50px] outline-none group cursor-pointer">
           <div
@@ -105,7 +107,8 @@ export function UserProfilePopover({
         </div>
         <Button
           asChild
-          className="w-full h-10 text-base rounded-xl bg-[#00BFCD] text-[#0a0a0a] font-semibold hover:bg-[#00B3C1]"
+          onClick={() => setIsOpen(false)}
+          className="w-full h-10 text-base rounded-xl bg-[#00BFCD] text-[#0a0a0a] font-semibold hover:bg-[#00838D] hover:text-shadow-md"
         >
           <Link href="/dashboard/pricing">Buy Credits</Link>
         </Button>

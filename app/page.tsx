@@ -1,9 +1,21 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+"use client";
 
+import { useState, useRef, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/layout/navbar";
 
 export default function Home() {
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current && videoRef.current.readyState >= 3) {
+      setIsVideoLoaded(true);
+    }
+  }, []);
+
   return (
     <div className="relative min-h-screen flex flex-col overflow-hidden">
       <div className="relative z-10">
@@ -11,12 +23,28 @@ export default function Home() {
       </div>
 
       <div className="absolute inset-0 z-0">
+        {!isVideoLoaded && (
+          <div className="absolute inset-0">
+            <Image
+              src="/images/home_image.jpg"
+              alt="Background placeholder"
+              fill
+              priority
+              className="object-cover opacity-60"
+            />
+          </div>
+        )}
+
         <video
+          ref={videoRef}
           autoPlay
           loop
           muted
           playsInline
-          className="w-full h-full object-cover opacity-60"
+          onCanPlay={() => setIsVideoLoaded(true)}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
+            isVideoLoaded ? "opacity-60" : "opacity-0"
+          }`}
         >
           <source src="/home-bg.mp4" type="video/mp4" />
           Your browser does not support the video tag.
@@ -37,7 +65,7 @@ export default function Home() {
           <div className="flex items-center gap-4">
             <Button
               asChild
-              className="rounded-full bg-[#00BFCD] text-[#0a0a0a] font-medium text-base hover:bg-[#00B3C1] h-10 px-4 py-4"
+              className="rounded-full bg-[#00BFCD] text-[#0a0a0a] font-medium text-base hover:bg-[#00838D] hover:text-shadow-md h-10 px-4 py-4"
             >
               <Link href="/login">Start Free Now</Link>
             </Button>

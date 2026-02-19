@@ -25,7 +25,7 @@ export function PlanBillingTab() {
           <Button
             variant="outline"
             size="sm"
-            className="border-[#FFFFFF33] bg-transparent text-foreground cursor-pointer text-xs"
+            className="border-[#FFFFFF33] bg-transparent text-foreground cursor-pointer text-xs hover:border-[#B2B3BD]  hover:text-shadow-md"
           >
             Upgrade plan
           </Button>
@@ -74,7 +74,7 @@ export function PlanBillingTab() {
             variant="outline"
             size="sm"
             onClick={() => setBillingHistoryOpen(true)}
-            className="border-[#FFFFFF33] bg-transparent text-foreground  text-xs  cursor-pointer"
+            className="border-[#FFFFFF33] bg-transparent text-foreground  text-xs  cursor-pointer hover:border-[#B2B3BD] hover:text-shadow-md"
           >
             Billing history
           </Button>

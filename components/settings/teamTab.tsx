@@ -13,6 +13,12 @@ import {
 } from "@/components/ui/table";
 import { MoreVertical } from "lucide-react";
 import placholderImage from "@/assets/icon-placeholder.jpg";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 interface TeamMember {
   name: string;
@@ -112,14 +118,29 @@ export function TeamTab() {
                   </Badge>
                 </TableCell>
                 <TableCell className="text-right">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-[#222]"
-                  >
-                    <MoreVertical className="h-4 w-4" />
-                    <span className="sr-only">More actions</span>
-                  </Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-[#222]"
+                      >
+                        <MoreVertical className="h-4 w-4" />
+                        <span className="sr-only">More actions</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                      align="end"
+                      className="bg-[#1A1A1A] border-[#333] text-foreground min-w-[120px]"
+                    >
+                      <DropdownMenuItem className="hover:bg-[#262626] focus:bg-[#262626] focus:text-foreground cursor-pointer text-sm">
+                        Pause
+                      </DropdownMenuItem>
+                      <DropdownMenuItem className="text-red-500 hover:bg-[#262626] hover:text-red-400 focus:bg-[#262626] focus:text-red-400 cursor-pointer text-sm">
+                        Remove
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </TableCell>
               </TableRow>
             ))}

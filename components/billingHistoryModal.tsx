@@ -103,7 +103,7 @@ export function BillingHistoryModal({
           <Button
             variant="outline"
             onClick={() => onOpenChange(false)}
-            className="w-full h-12 rounded-2xl border-[#9F9FA9] border-2 bg-transparent  font-normal text-sm cursor-pointer"
+            className="w-full h-12 rounded-2xl border-[#9F9FA9] border-2 bg-transparent  font-normal text-sm cursor-pointer hover:text-shadow-md hover:font-semibold"
           >
             Close
           </Button>

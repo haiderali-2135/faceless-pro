@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Image from "next/image";
-import { ArrowUp, Settings2 } from "lucide-react";
+import { ArrowUp, Settings2, XIcon } from "lucide-react";
 
 // Assets
 import fileLogo from "@/assets/diagonal-rounded-link-1.svg";
@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/popover";
 
 interface PromptInputProps {
-  onSubmit?: (prompt: string) => void;
+  onSubmit?: (prompt: string, files?: File[]) => void;
   hideInfo?: boolean;
   inChat?: boolean;
 }
@@ -30,16 +30,102 @@ export function PromptInput({ onSubmit, hideInfo = false }: PromptInputProps) {
   const [prompt, setPrompt] = useState("");
   const [aspectRatio, setAspectRatio] = useState<"9:16" | "16:9">("9:16");
 
+  const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const handleSubmit = () => {
-    if (prompt.trim() && onSubmit) {
-      onSubmit(prompt);
+    if ((prompt.trim() || attachedFiles.length > 0) && onSubmit) {
+      onSubmit(prompt, attachedFiles);
       setPrompt("");
+      setAttachedFiles([]);
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const newFiles = Array.from(e.target.files).filter((file) =>
+        file.type.startsWith("image/"),
+      );
+      setAttachedFiles((prev) => [...prev, ...newFiles]);
+    }
+    // Reset input so the same file can be re-uploaded if removed
+    if (e.target) e.target.value = "";
+  };
+
+  const removeFile = (indexToRemove: number) => {
+    setAttachedFiles((prev) => prev.filter((_, idx) => idx !== indexToRemove));
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+    if (e.dataTransfer.files) {
+      const droppedFiles = Array.from(e.dataTransfer.files).filter((file) =>
+        file.type.startsWith("image/"),
+      );
+      setAttachedFiles((prev) => [...prev, ...droppedFiles]);
     }
   };
 
   return (
     <div className="w-full max-w-3xl mx-auto px-4 pb-6">
-      <div className="rounded-2xl border border-[2px] border-[#C5C5C5] bg-[#1A1A1A] py-3 px-4">
+      <input
+        type="file"
+        accept="image/*"
+        multiple
+        className="hidden"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+      />
+      <div
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        className={`rounded-2xl border border-[2px] transition-colors duration-200 py-3 px-4 ${
+          isDragging
+            ? "border-[#00BFCD] bg-[#1A1A1A]/80"
+            : "border-[#C5C5C5] bg-[#1A1A1A]"
+        }`}
+      >
+        {attachedFiles.length > 0 && (
+          <div className="flex flex-wrap gap-3 mb-3">
+            {attachedFiles.map((file, idx) => (
+              <div
+                key={`${file.name}-${idx}`}
+                className="relative h-16 w-16 rounded-lg overflow-hidden border border-[#404040] group bg-black"
+              >
+                <Image
+                  src={URL.createObjectURL(file)}
+                  alt="Attachment preview"
+                  fill
+                  className="object-cover"
+                />
+                <button
+                  onClick={() => removeFile(idx)}
+                  className="absolute top-1 right-1 bg-black/60 hover:bg-black/90 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                  aria-label="Remove image"
+                >
+                  <XIcon className="h-3 w-3" />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
         <textarea
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
@@ -57,7 +143,11 @@ export function PromptInput({ onSubmit, hideInfo = false }: PromptInputProps) {
         <div className="mt-2">
           <div className="hidden md:flex items-center justify-between">
             <div className="flex items-center gap-1">
-              <ToolbarIconButton icon={fileLogo} label="Attach file" />
+              <ToolbarIconButton
+                icon={fileLogo}
+                label="Attach file"
+                onClick={triggerFileInput}
+              />
               <ToolbarIconButton icon={filterLogo} label="Settings" />
 
               <div className="h-5 w-px bg-[#D4D4D4] mx-2" />
@@ -164,10 +254,10 @@ export function PromptInput({ onSubmit, hideInfo = false }: PromptInputProps) {
 
                 <button
                   onClick={handleSubmit}
-                  className="h-9 w-9 rounded-lg bg-[#404040] border border-[#737373] flex items-center justify-center text-foreground"
+                  className="h-9 w-9 rounded-lg bg-[#404040] border border-[#737373] flex items-center justify-center text-foreground hover:border-2 cursor-pointer"
                   aria-label="Send prompt"
                 >
-                  <ArrowUp className="h-4 w-4" />
+                  <ArrowUp className="h-4 w-4 " />
                 </button>
               </div>
             </div>
@@ -186,9 +276,12 @@ export function PromptInput({ onSubmit, hideInfo = false }: PromptInputProps) {
                 className="w-auto bg-[#1A1A1A] border-[#333] p-4 text-foreground shadow-xl rounded-xl"
               >
                 <div className="flex flex-col gap-4">
-                  {/* Row 1: Icons */}
                   <div className="flex items-center gap-2 border-b border-[#333] pb-3">
-                    <ToolbarIconButton icon={fileLogo} label="Attach file" />
+                    <ToolbarIconButton
+                      icon={fileLogo}
+                      label="Attach file"
+                      onClick={triggerFileInput}
+                    />
                     <ToolbarIconButton icon={filterLogo} label="Settings" />
                     <div className="h-5 w-px bg-[#D4D4D4] mx-2" />
                     <button
@@ -290,9 +383,18 @@ export function PromptInput({ onSubmit, hideInfo = false }: PromptInputProps) {
   );
 }
 
-function ToolbarIconButton({ icon, label }: { icon: string; label: string }) {
+function ToolbarIconButton({
+  icon,
+  label,
+  onClick,
+}: {
+  icon: string;
+  label: string;
+  onClick?: () => void;
+}) {
   return (
     <button
+      onClick={onClick}
       className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-[#262626] transition-colors group relative"
       aria-label={label}
       title={label}

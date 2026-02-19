@@ -210,7 +210,7 @@ export function ProfileTab() {
       <div>
         <Button
           variant="outline"
-          className="text-xs border-[#FFFFFF33] text-[#B0B0B0]  hover:text-white"
+          className="text-xs border-[#FFFFFF33] text-[#B0B0B0]  hover:text-white hover:bg-[#FF0000] cursor-pointer"
         >
           Delete account
         </Button>

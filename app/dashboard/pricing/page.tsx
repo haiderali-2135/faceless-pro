@@ -205,9 +205,9 @@ export default function PricingPage() {
             <AccordionItem
               key={idx}
               value={`faq-${idx}`}
-              className="rounded-xl border border-px border-[#373737] bg-[#0F0F0F] px-5 "
+              className="rounded-xl border border-px border-[#373737] bg-[#0F0F0F] px-5 last:border-b"
             >
-              <AccordionTrigger className="text-xl font-medium text-foreground hover:no-underline">
+              <AccordionTrigger className="text-xl font-medium text-foreground hover:no-underline cursor-pointer">
                 {item.question}
               </AccordionTrigger>
               <AccordionContent className="text-sm font-normal text-[#D4D4D4] leading-relaxed max-w-xl">

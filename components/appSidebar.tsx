@@ -54,7 +54,7 @@ export default function AppSidebar() {
   return (
     <Sidebar
       collapsible="offcanvas"
-      className=" !h-full  border-r border-[#222]  bg-[#171717] p-1  overflow-hidden"
+      className="hidden md:flex !h-full  border-r border-[#222]  bg-[#171717] p-1  overflow-hidden"
     >
       <SidebarHeader className="h-[75px] w-full bg-background mb-2" />
 

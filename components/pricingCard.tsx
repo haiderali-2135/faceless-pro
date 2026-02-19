@@ -75,8 +75,8 @@ export function PricingCard({
         <Button
           onClick={onSelect}
           className={cn(
-            "w-full rounded-lg font-normal h-10 mt-2 transition-all duration-200 cursor-pointer",
-            isPopular ? "bg-[#00BFCD] text-[#0a0a0a] " : "bg-[#314158]  ",
+            "w-full rounded-lg font-normal h-10 mt-2 transition-all duration-200 cursor-pointer hover:font-semibold",
+            isPopular ? "bg-[#00BFCD]  text-[#0a0a0a] " : "bg-[#314158]  ",
           )}
         >
           {buttonLabel}

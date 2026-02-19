@@ -44,7 +44,7 @@ export function SettingsNav({ activeTab, onTabChange }: SettingsNavProps) {
             key={item.id}
             onClick={() => onTabChange(item.id)}
             className={cn(
-              "flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-left w-full",
+              "flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-left w-full cursor-pointer",
               activeTab === item.id
                 ? "bg-[#1A1A1A] text-foreground"
                 : "text-muted-foreground hover:text-foreground hover:bg-[#1A1A1A]/50",

@@ -32,7 +32,7 @@ export function Navbar() {
       <div className="hidden md:flex items-center gap-6">
         <Button
           asChild
-          className="rounded-lg bg-white text-[#0a0a0a] font-medium hover:bg-gray-300 px-6 h-9"
+          className="rounded-lg bg-white text-[#0a0a0a] font-medium hover:bg-[#B2B3BD] hover:text-shadow-md px-6 h-9"
         >
           <Link href="/signup">View Subscription</Link>
         </Button>
@@ -41,7 +41,7 @@ export function Navbar() {
 
         <Button
           asChild
-          className="rounded-lg bg-[#00BFCD] text-[#0a0a0a] font-medium hover:bg-[#00B3C1] px-6 h-9"
+          className="rounded-lg bg-[#00BFCD] text-[#0a0a0a] font-medium hover:bg-[#00838D] hover:text-shadow-md px-6 h-9"
         >
           <Link href="/login">Start Free Now</Link>
         </Button>

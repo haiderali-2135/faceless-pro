@@ -48,7 +48,7 @@ function Page() {
         <div className="flex flex-col gap-2">
           <Button
             type="submit"
-            className="w-full h-12 text-lg rounded-xl bg-[#00BFCD] text-[#0a0a0a] font-medium text-base hover:bg-[#00B3C1] transition-colors cursor-pointer"
+            className="w-full h-12 text-lg rounded-xl bg-[#00BFCD] text-[#0a0a0a] font-medium text-base hover:bg-[#00838D] hover:text-shadow-md transition-colors cursor-pointer"
           >
             Verify Email
           </Button>
@@ -69,7 +69,7 @@ function Page() {
         <p className="text-center text-sm ">
           <Link
             href="/forgot-password"
-            className="text-foreground font-semibold underline  text-lg"
+            className="text-foreground font-semibold text-lg hover:underline"
           >
             Change Email
           </Link>
